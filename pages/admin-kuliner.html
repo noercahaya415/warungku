@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Warung Kuliner - Warungku</title>
+  <link rel="stylesheet" href="css/admin-kuliner.css">
+</head>
+<body>
+  <header class="admin-header">
+    <div class="header-left">
+      <img src="../images/logo-warungku.png" alt="Warungku" class="logo-img">
+      <h1>Admin Warung Kuliner</h1>
+    </div>
+    <div class="header-right">
+      <span id="admin-name">Admin User</span>
+      <button id="logout-btn" class="logout-btn">Logout</button>
+    </div>
+  </header>
+
+  <nav class="admin-nav">
+    <ul>
+      <li><a href="#menu-management" class="nav-link active">Manajemen Menu</a></li>
+      <li><a href="#order-management" class="nav-link">Manajemen Pesanan</a></li>
+      <li><a href="#settings" class="nav-link">Pengaturan</a></li>
+    </ul>
+  </nav>
+
+  <main class="admin-main">
+    <!-- Modul 1: Manajemen Menu -->
+    <section id="menu-management" class="module active">
+      <h2>Manajemen Menu</h2>
+      
+      <div class="add-menu-form">
+        <h3>Tambah Menu Baru</h3>
+        <form id="new-menu-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="menu-name">Nama Menu</label>
+              <input type="text" id="menu-name" required>
+            </div>
+            <div class="form-group">
+              <label for="menu-price">Harga (Rp)</label>
+              <input type="number" id="menu-price" min="0" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="menu-description">Deskripsi</label>
+            <textarea id="menu-description" rows="2"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="menu-category">Kategori</label>
+            <select id="menu-category">
+              <option value="makanan">Makanan</option>
+              <option value="minuman">Minuman</option>
+              <option value="snack">Snack</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="menu-image">Gambar Menu (URL)</label>
+            <input type="text" id="menu-image">
+          </div>
+          <button type="submit" class="btn-primary">Tambah Menu</button>
+        </form>
+      </div>
+      
+      <div class="menu-list-container">
+        <h3>Daftar Menu</h3>
+        <div class="search-filter">
+          <input type="text" id="menu-search" placeholder="Cari menu...">
+          <select id="category-filter">
+            <option value="all">Semua Kategori</option>
+            <option value="makanan">Makanan</option>
+            <option value="minuman">Minuman</option>
+            <option value="snack">Snack</option>
+          </select>
+        </div>
+        
+        <div id="menu-list" class="menu-list">
+          <!-- Daftar menu akan diisi oleh JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Modul 2: Manajemen Pesanan -->
+    <section id="order-management" class="module">
+      <h2>Manajemen Pesanan</h2>
+      
+      <div class="order-filters">
+        <div class="filter-group">
+          <label for="order-status">Status:</label>
+          <select id="order-status">
+            <option value="all">Semua Status</option>
+            <option value="new">Pesanan Baru</option>
+            <option value="processing">Diproses</option>
+            <option value="delivering">Dikirim</option>
+            <option value="completed">Selesai</option>
+            <option value="cancelled">Dibatalkan</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="date-from">Dari:</label>
+          <input type="date" id="date-from">
+        </div>
+        
+        <div class="filter-group">
+          <label for="date-to">Hingga:</label>
+          <input type="date" id="date-to">
+        </div>
+        
+        <div class="filter-group">
+          <label for="sort-order">Urutkan:</label>
+          <select id="sort-order">
+            <option value="newest">Terbaru</option>
+            <option value="oldest">Terlama</option>
+            <option value="price-asc">Total (Terendah)</option>
+            <option value="price-desc">Total (Tertinggi)</option>
+          </select>
+        </div>
+        
+        <button id="apply-filters" class="btn-primary">Terapkan</button>
+      </div>
+      
+      <div id="order-list" class="order-list">
+        <!-- Daftar pesanan akan diisi oleh JavaScript -->
+      </div>
+    </section>
+
+    <!-- Modul 3: Pengaturan -->
+    <section id="settings" class="module">
+      <h2>Pengaturan Warung</h2>
+      
+      <form id="warung-settings-form">
+        <div class="form-group">
+          <label for="warung-name">Nama Warung</label>
+          <input type="text" id="warung-name" value="Rumah Makan Padang" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="warung-address">Alamat</label>
+          <textarea id="warung-address" rows="3" required>Jl. Contoh No. 123, Kota Padang</textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="warung-phone">Telepon</label>
+          <input type="tel" id="warung-phone" value="081234567890" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="operational-hours">Jam Operasional</label>
+          <input type="text" id="operational-hours" value="09:00 - 21:00" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="delivery-fee-default">Ongkos Kirim Default (Rp)</label>
+          <input type="number" id="delivery-fee-default" min="0" value="10000">
+        </div>
+        
+        <div class="form-group">
+          <label for="service-fee-default">Biaya Servis Default (Rp)</label>
+          <input type="number" id="service-fee-default" min="0" value="2000">
+        </div>
+        
+        <button type="submit" class="btn-primary">Simpan Pengaturan</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="js/admin-kuliner.js"></script>
+</body>
+</html>

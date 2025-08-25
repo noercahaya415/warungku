@@ -1,0 +1,178 @@
+<!-- warung-retail.html -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko Retail - Warungku</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/warung-retail.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-store"></i>
+                <span id="nama-toko">Nama Toko Retail</span>
+            </div>
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Cari produk...">
+                    <button id="searchBtn"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="cart-icon" id="cartIcon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </div>
+                <button class="login-btn" id="loginBtn">
+                    <i class="fas fa-user"></i> Login Admin
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Horizontal Category Navigation -->
+    <div class="categories-container">
+        <div class="categories-scroll">
+            <div class="category-item-horizontal active" data-category="all">
+                <i class="fas fa-boxes"></i>
+                <span>Semua</span>
+            </div>
+            <div class="category-item-horizontal" data-category="sembako">
+                <i class="fas fa-shopping-basket"></i>
+                <span>Sembako</span>
+            </div>
+            <div class="category-item-horizontal" data-category="makanan">
+                <i class="fas fa-cookie"></i>
+                <span>Makanan</span>
+            </div>
+            <div class="category-item-horizontal" data-category="minuman">
+                <i class="fas fa-wine-bottle"></i>
+                <span>Minuman</span>
+            </div>
+            <div class="category-item-horizontal" data-category="sabun-pembersih">
+                <i class="fas fa-pump-soap"></i>
+                <span>Sabun & Pembersih</span>
+            </div>
+            <div class="category-item-horizontal" data-category="peralatan-rt">
+                <i class="fas fa-home"></i>
+                <span>Peralatan RT</span>
+            </div>
+            <div class="category-item-horizontal" data-category="sayur-buah">
+                <i class="fas fa-carrot"></i>
+                <span>Sayur & Buah</span>
+            </div>
+            <div class="category-item-horizontal" data-category="bumbu">
+                <i class="fas fa-mortar-pestle"></i>
+                <span>Bumbu</span>
+            </div>
+            <div class="category-item-horizontal" data-category="obat">
+                <i class="fas fa-pills"></i>
+                <span>Obat-obatan</span>
+            </div>
+            <div class="category-item-horizontal" data-category="atk">
+                <i class="fas fa-pencil-alt"></i>
+                <span>ATK</span>
+            </div>
+            <div class="category-item-horizontal" data-category="rokok">
+                <i class="fas fa-smoking"></i>
+                <span>Rokok</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Filter and Sort Section -->
+        <div class="filter-sort-container">
+            <div class="filter-section">
+                <button class="filter-btn" id="filterBtn">
+                    <i class="fas fa-filter"></i> Filter
+                </button>
+                <div class="filter-options" id="filterOptions">
+                    <div class="filter-group">
+                        <label>Harga:</label>
+                        <div class="price-range">
+                            <input type="number" id="minPrice" placeholder="Min">
+                            <span>-</span>
+                            <input type="number" id="maxPrice" placeholder="Max">
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label>Stok Tersedia:</label>
+                        <label><input type="checkbox" name="stock" value="available"> Tersedia</label>
+                        <label><input type="checkbox" name="stock" value="low"> Sedikit</label>
+                    </div>
+                    <button class="apply-filter-btn" id="applyFilter">Terapkan</button>
+                </div>
+            </div>
+            
+            <div class="sort-section">
+                <select class="sort-select" id="sortSelect">
+                    <option value="newest">Urutkan: Terbaru</option>
+                    <option value="price-asc">Harga: Rendah ke Tinggi</option>
+                    <option value="price-desc">Harga: Tinggi ke Rendgi</option>
+                    <option value="name-asc">Nama: A-Z</option>
+                    <option value="name-desc">Nama: Z-A</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Daftar Produk -->
+        <div class="products-container">
+            <div class="products-header">
+                <h2 class="section-title">Produk Kami</h2>
+                <div class="products-count" id="productsCount">Menampilkan 0 produk</div>
+            </div>
+            <div class="products-grid" id="productsGrid">
+                <!-- Produk akan dimuat melalui JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Keranjang Belanja (Popup) -->
+    <div class="cart-popup" id="cartPopup">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h3><i class="fas fa-shopping-cart"></i> Keranjang Belanja</h3>
+                <button class="close-cart" id="closeCart">&times;</button>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <!-- Item keranjang akan dimuat melalui JavaScript -->
+                <p class="empty-cart-message" id="emptyCartMessage">Keranjang belanja Anda kosong</p>
+            </div>
+            <div class="cart-summary">
+                <div class="cart-total">
+                    <span>Sub Total:</span>
+                    <span id="cartTotal">Rp 0</span>
+                </div>
+                <button class="checkout-btn" id="checkoutBtn">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Login Admin -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Login Admin Toko</h3>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="adminUsername" placeholder="Masukkan username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="adminPassword" placeholder="Masukkan password">
+            </div>
+            <button class="admin-login-btn" id="adminLoginBtn">Login</button>
+        </div>
+    </div>
+
+    <script src="js/warung-retail.js"></script>
+</body>
+</html>

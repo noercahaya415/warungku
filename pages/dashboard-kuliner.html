@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Kesehatan Usaha - Warungku</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/dashboard-kuliner.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="dashboard-header">
+    <div class="header-left">
+      <img src="images/logo-warungku.png" alt="Warungku" class="logo-img">
+      <h1>Dashboard Kesehatan Usaha</h1>
+    </div>
+    <div class="header-right">
+      <div class="date-filter">
+        <select id="time-period">
+          <option value="today">Hari Ini</option>
+          <option value="week">Minggu Ini</option>
+          <option value="month" selected>Bulan Ini</option>
+          <option value="quarter">Kuartal Ini</option>
+          <option value="year">Tahun Ini</option>
+        </select>
+      </div>
+      <button id="export-btn" class="export-btn"><i class="fas fa-download"></i> Export Laporan</button>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <!-- Ringkasan Kesehatan Usaha -->
+    <section class="health-overview">
+      <div class="health-score">
+        <h2>Skor Kesehatan Usaha</h2>
+        <div class="score-circle">
+          <div class="score-value">78</div>
+          <div class="score-label">/100</div>
+        </div>
+        <div class="score-breakdown">
+          <div class="breakdown-item">
+            <span class="label">Penjualan</span>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 85%"></div>
+            </div>
+            <span class="value">85%</span>
+          </div>
+          <div class="breakdown-item">
+            <span class="label">Profitabilitas</span>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 72%"></div>
+            </div>
+            <span class="value">72%</span>
+          </div>
+          <div class="breakdown-item">
+            <span class="label">Kepuasan Pelanggan</span>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 90%"></div>
+            </div>
+            <span class="value">90%</span>
+          </div>
+          <div class="breakdown-item">
+            <span class="label">Efisiensi Operasional</span>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 65%"></div>
+            </div>
+            <span class="value">65%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="key-metrics">
+        <h2>Metrik Kunci</h2>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-icon revenue">
+              <i class="fas fa-money-bill-wave"></i>
+            </div>
+            <div class="metric-info">
+              <div class="metric-value">Rp 8.250.000</div>
+              <div class="metric-label">Pendapatan</div>
+              <div class="metric-change positive">
+                <i class="fas fa-arrow-up"></i> 12.5%
+              </div>
+            </div>
+          </div>
+          
+          <div class="metric-card">
+            <div class="metric-icon orders">
+              <i class="fas fa-shopping-basket"></i>
+            </div>
+            <div class="metric-info">
+              <div class="metric-value">142</div>
+              <div class="metric-label">Pesanan</div>
+              <div class="metric-change positive">
+                <i class="fas fa-arrow-up"></i> 8.4%
+              </div>
+            </div>
+          </div>
+          
+          <div class="metric-card">
+            <div class="metric-icon customers">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="metric-info">
+              <div class="metric-value">98</div>
+              <div class="metric-label">Pelanggan</div>
+              <div class="metric-change positive">
+                <i class="fas fa-arrow-up"></i> 5.2%
+              </div>
+            </div>
+          </div>
+          
+          <div class="metric-card">
+            <div class="metric-icon avg-order">
+              <i class="fas fa-receipt"></i>
+            </div>
+            <div class="metric-info">
+              <div class="metric-value">Rp 58.099</div>
+              <div class="metric-label">Rata-rata Pesanan</div>
+              <div class="metric-change positive">
+                <i class="fas fa-arrow-up"></i> 3.8%
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Grafik dan Visualisasi -->
+    <section class="charts-section">
+      <div class="chart-container">
+        <h3>Trend Pendapatan</h3>
+        <canvas id="revenue-chart"></canvas>
+      </div>
+      
+      <div class="chart-container">
+        <h3>Top 5 Menu Terlaris</h3>
+        <canvas id="menu-performance-chart"></canvas>
+      </div>
+      
+      <div class="chart-container">
+        <h3>Distribusi Kategori</h3>
+        <canvas id="category-chart"></canvas>
+      </div>
+      
+      <div class="chart-container">
+        <h3>Jam Puncak Pesanan</h3>
+        <canvas id="peak-hours-chart"></canvas>
+      </div>
+    </section>
+
+    <!-- Analisis Mendalam -->
+    <section class="deep-analysis">
+      <div class="analysis-card">
+        <h3>Analisis Profitabilitas</h3>
+        <div class="profit-analysis">
+          <div class="profit-metric">
+            <span class="label">Margin Kotor</span>
+            <span class="value">42%</span>
+          </div>
+          <div class="profit-metric">
+            <span class="label">Biaya Operasional</span>
+            <span class="value">28%</span>
+          </div>
+          <div class="profit-metric">
+            <span class="label">Margin Bersih</span>
+            <span class="value">14%</span>
+          </div>
+        </div>
+        <div class="recommendation">
+          <h4>Rekomendasi:</h4>
+          <p>Pertimbangkan untuk menaikkan harga menu andal 5-7% untuk meningkatkan margin tanpa mengurangi volume penjualan.</p>
+        </div>
+      </div>
+      
+      <div class="analysis-card">
+        <h3>Analisis Pelanggan</h3>
+        <div class="customer-analysis">
+          <div class="customer-metric">
+            <span class="label">Pelanggan Baru</span>
+            <span class="value">32%</span>
+          </div>
+          <div class="customer-metric">
+            <span class="label">Pelanggan Kembali</span>
+            <span class="value">68%</span>
+          </div>
+          <div class="customer-metric">
+            <span class="label">Tingkat Retensi</span>
+            <span class="value">45%</span>
+          </div>
+        </div>
+        <div class="recommendation">
+          <h4>Rekomendasi:</h4>
+          <p>Tingkatkan program loyalitas untuk mempertahankan pelanggan yang sudah ada. Pelanggan kembali menghabiskan 30% lebih banyak.</p>
+        </div>
+      </div>
+      
+      <div class="analysis-card">
+        <h3>Analisis Operasional</h3>
+        <div class="operational-analysis">
+          <div class="operational-metric">
+            <span class="label">Waktu Persiapan Rata-rata</span>
+            <span class="value">18 menit</span>
+          </div>
+          <div class="operational-metric">
+            <span class="label">Tingkat Keterlambatan</span>
+            <span class="value">7%</span>
+          </div>
+          <div class="operational-metric">
+            <span class="label">Kepuasan Pelanggan</span>
+            <span class="value">4.5/5</span>
+          </div>
+        </div>
+        <div class="recommendation">
+          <h4>Rekomendasi:</h4>
+          <p>Optimalkan stasiun persiapan untuk mengurangi waktu penyiapan pesanan, terutama selama jam sibuk (12:00-14:00).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Laporan Detail -->
+    <section class="detailed-reports">
+      <h2>Laporan Detail</h2>
+      <div class="report-tabs">
+        <button class="tab-link active" data-tab="sales-report">Laporan Penjualan</button>
+        <button class="tab-link" data-tab="customer-report">Laporan Pelanggan</button>
+        <button class="tab-link" data-tab="menu-report">Laporan Menu</button>
+      </div>
+      
+      <div id="sales-report" class="tab-content active">
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>Pesanan</th>
+              <th>Pendapatan</th>
+              <th>Pelanggan</th>
+              <th>Rata-rata Pesanan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Data akan diisi oleh JavaScript -->
+          </tbody>
+        </table>
+      </div>
+      
+      <div id="customer-report" class="tab-content">
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Segmentasi</th>
+              <th>Jumlah</th>
+              <th>Pesanan</th>
+              <th>Nilai Rata-rata</th>
+              <th>Pertumbuhan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Data akan diisi oleh JavaScript -->
+          </tbody>
+        </table>
+      </div>
+      
+      <div id="menu-report" class="tab-content">
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Menu</th>
+              <th>Terjual</th>
+              <th>Pendapatan</th>
+              <th>Margin</th>
+              <th>Popularitas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Data akan diisi oleh JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/dashboard-kuliner.js"></script>
+</body>
+</html>

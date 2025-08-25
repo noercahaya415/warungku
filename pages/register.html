@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar - Warungku</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="css/register.css">
+    
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Kembali ke Halaman Utama
+            </a>
+            <a href="#" class="nav-logo">
+                <img src="images/logo-warungku.png" alt="Warungku Logo">
+            </a>
+        </header>
+
+        <div class="registration-container">
+            <div class="registration-form">
+                <h2>Buat Akun Warungku</h2>
+                <p>Isi data berikut untuk mendaftarkan usaha Anda</p>
+                
+                <form id="registration-form">
+                    <!-- Section 1: Jenis Usaha -->
+                    <div class="form-section">
+                        <h3><i>1</i> Jenis Usaha</h3>
+                        <div class="business-type">
+                            <div class="business-option" onclick="selectBusinessType('retail')">
+                                <i class="fas fa-store"></i>
+                                <h4>Warung Retail</h4>
+                                <p>Toko kelontong, minimarket, atau warung sembako</p>
+                            </div>
+                            <div class="business-option" onclick="selectBusinessType('kuliner')">
+                                <i class="fas fa-utensils"></i>
+                                <h4>Warung Kuliner</h4>
+                                <p>Restoran, kedai makanan, atau warung makan</p>
+                            </div>
+                        </div>
+                        <input type="hidden" id="business-type" name="business-type" required>
+                    </div>
+
+                    <!-- Section 2: Data Login -->
+                    <div class="form-section">
+                        <h3><i>2</i> Data Login</h3>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <div class="input-group">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="username" name="username" placeholder="Buat username unik" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <div class="input-group">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="email" name="email" placeholder="Alamat email aktif" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="password">Kata Sandi</label>
+                                <div class="input-group">
+                                    <i class="fas fa-lock"></i>
+                                    <input type="password" id="password" name="password" placeholder="Buat kata sandi" required>
+                                    <span class="toggle-password" onclick="togglePassword('password')">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="confirm-password">Konfirmasi Kata Sandi</label>
+                                <div class="input-group">
+                                    <i class="fas fa-lock"></i>
+                                    <input type="password" id="confirm-password" name="confirm-password" placeholder="Ulangi kata sandi" required>
+                                    <span class="toggle-password" onclick="togglePassword('confirm-password')">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Data Usaha -->
+                    <div class="form-section">
+                        <h3><i>3</i> Data Usaha</h3>
+                        <div class="form-group">
+                            <label for="business-name">Nama Usaha</label>
+                            <div class="input-group">
+                                <i class="fas fa-signature"></i>
+                                <input type="text" id="business-name" name="business-name" placeholder="Nama warung/usaha" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="business-phone">Nomor Telepon Usaha</label>
+                            <div class="input-group">
+                                <i class="fas fa-phone"></i>
+                                <input type="tel" id="business-phone" name="business-phone" placeholder="Nomor telepon usaha" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="business-desc">Deskripsi Usaha (Opsional)</label>
+                            <div class="input-group">
+                                <i class="fas fa-file-alt"></i>
+                                <textarea id="business-desc" name="business-desc" placeholder="Jelaskan sedikit tentang usaha Anda"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Data Pemilik -->
+                    <div class="form-section">
+                        <h3><i>4</i> Data Pemilik</h3>
+                        <div class="form-group">
+                            <label for="owner-name">Nama Lengkap Pemilik</label>
+                            <div class="input-group">
+                                <i class="fas fa-user-tie"></i>
+                                <input type="text" id="owner-name" name="owner-name" placeholder="Nama lengkap pemilik" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="owner-phone">Nomor Telepon Pemilik</label>
+                            <div class="input-group">
+                                <i class="fas fa-mobile-alt"></i>
+                                <input type="tel" id="owner-phone" name="owner-phone" placeholder="Nomor telepon pemilik" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 5: Alamat Usaha -->
+                    <div class="form-section">
+                        <h3><i>5</i> Alamat Usaha</h3>
+                        <div class="form-group">
+                            <label for="address">Alamat Lengkap</label>
+                            <div class="input-group">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <textarea id="address" name="address" placeholder="Alamat lengkap usaha" required></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="province">Provinsi</label>
+                                <div class="input-group">
+                                    <i class="fas fa-map"></i>
+                                    <select id="province" name="province" required>
+                                        <option value="">Pilih Provinsi</option>
+                                        <option value="DKI Jakarta">DKI Jakarta</option>
+                                        <option value="Jawa Barat">Jawa Barat</option>
+                                        <option value="Jawa Tengah">Jawa Tengah</option>
+                                        <option value="Jawa Timur">Jawa Timur</option>
+                                        <option value="Banten">Banten</option>
+                                        <option value="DI Yogyakarta">DI Yogyakarta</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="city">Kota/Kabupaten</label>
+                                <div class="input-group">
+                                    <i class="fas fa-city"></i>
+                                    <select id="city" name="city" required>
+                                        <option value="">Pilih Kota/Kabupaten</option>
+                                        <option value="Jakarta Selatan">Jakarta Selatan</option>
+                                        <option value="Jakarta Timur">Jakarta Timur</option>
+                                        <option value="Bandung">Bandung</option>
+                                        <option value="Surabaya">Surabaya</option>
+                                        <option value="Yogyakarta">Yogyakarta</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Pinpoint Lokasi di Peta</label>
+                            <p class="help-text">Geser pin untuk menandai lokasi usaha Anda secara akurat</p>
+                            <div class="map-container">
+                                <div id="address-map"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Daftar Sekarang</button>
+                </form>
+            </div>
+
+            <div class="registration-side">
+                <img src="images/warung-illustration.png" alt="Warung Illustration">
+                <h2>Bergabunglah dengan Warungku</h2>
+                <p>Dapatkan akses penuh untuk mengelola warung Anda secara digital</p>
+                
+                <div class="benefits">
+                    <div class="benefit-item">
+                        <i class="fas fa-chart-line"></i>
+                        <div>
+                            <h4>Kelola Penjualan</h4>
+                            <p>Pantau penjualan dan pertumbuhan usaha Anda</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-boxes"></i>
+                        <div>
+                            <h4>Kelola Inventori</h4>
+                            <p>Atur stok barang dengan mudah dan terorganisir</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-users"></i>
+                        <div>
+                            <h4>Jangkau Pelanggan</h4>
+                            <p>Terhubung dengan lebih banyak pelanggan</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logo-warungku.png" alt="Warungku Logo">
+                </div>
+                <div class="footer-links">
+                    <a href="#">Tentang Kami</a>
+                    <a href="#">Kebijakan Privasi</a>
+                    <a href="#">Syarat & Ketentuan</a>
+                    <a href="#">Bantuan</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Warungku. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/register.js"></script>
+</body>
+</html>

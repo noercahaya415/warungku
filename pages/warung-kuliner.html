@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Warung Kuliner - Warungku</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/warung-kuliner.css">
+  <style>
+    /* Admin Panel Styles */
+    .admin-panel {
+      display: none;
+      padding: 20px;
+      background-color: #f8f9fc;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e3e6f0;
+    }
+    
+    .admin-controls {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .admin-btn {
+      padding: 8px 15px;
+      background-color: #4e73df;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+    }
+    
+    .admin-btn.logout {
+      background-color: #e74a3b;
+    }
+    
+    .admin-section {
+      margin-bottom: 30px;
+    }
+    
+    .admin-section h3 {
+      margin-bottom: 15px;
+      color: #4e73df;
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #4e73df;
+      margin-bottom: 5px;
+    }
+    
+    .stat-label {
+      color: #6e707e;
+      font-size: 14px;
+    }
+    
+    /* Login Form Styles */
+    .login-form-container {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .login-form {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    
+    .login-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .login-header img {
+      max-width: 120px;
+      margin-bottom: 15px;
+    }
+    
+    .login-form .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .login-form label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+    
+    .login-form input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d1d3e2;
+      border-radius: 4px;
+    }
+    
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #4e73df;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    
+    .login-error {
+      color: #e74a3b;
+      font-size: 14px;
+      margin-top: 5px;
+      display: none;
+    }
+    
+    .login-footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #6e707e;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="images/logo-warungku.png" alt="Warungku" class="logo-img">
+    </div>    
+    <div class="admin-login-container">
+      <a href="#" id="admin-login-btn" class="admin-login-btn">
+        <i class="fas fa-user-cog"></i> Login Admin
+      </a>
+      <a href="#" id="customer-view-btn" class="admin-login-btn" style="display: none;">
+        <i class="fas fa-arrow-left"></i> Kembali ke Tampilan Customer
+      </a>
+    </div>
+    <div class="delivery-text">Rumah Makan Padang - Delivery Order</div>
+  </header>
+
+  <!-- Customer View -->
+  <main id="customer-view">
+    <section class="menu-container" id="menu-list">
+      <div class="order-instruction">
+        <h3>Cara Memesan</h3>
+        <ol>
+          <li>Silakan klik tombol <strong>Tambah (+)/Kurang (-)</strong> pada masing-masing menu untuk mengatur jumlah pesanan Anda</li>
+          <li>Pesanan Anda akan otomatis muncul di keranjang sebelah kanan</li>
+          <li>Isi data diri dan alamat lengkap, letakkan pin lokasi secara akurat sesuai dengan alamat Anda</li>
+          <li>Tambahkan catatan jika ada permintaan khusus, lalu klik <strong>Pesan via WhatsApp</strong></li>
+        </ol>
+        <p>Selamat menikmati hidangan lezat kami!</p>
+      </div>     
+    </section>
+
+    <aside class="order-summary">
+      <h3>Pesanan Anda</h3>
+      <div id="order-items"></div>
+      <p><strong>Subtotal:</strong> <span id="subtotal">Rp 0</span></p>
+
+      <div class="fee-section">
+        <div class="form-group">
+          <label for="delivery-fee">Ongkos Kirim (Rp)</label>
+          <input type="number" id="delivery-fee" name="delivery-fee" min="0" value="0" readonly>
+        </div>
+        <div class="form-group">
+          <label for="service-fee">Biaya Servis (Rp)</label>
+          <input type="number" id="service-fee" name="service-fee" min="0" value="0">
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="tax-toggle" checked>
+            Pajak (10%)
+          </label>
+        </div>
+      </div>
+
+      <p><strong>Total:</strong> <span id="total">Rp 0</span></p>
+
+      <div class="customer-info">
+        <h4>Informasi Pelanggan</h4>
+        <form id="customer-form">
+          <div class="form-group">
+            <label for="nama">Nama Lengkap</label>
+            <input type="text" id="nama" name="nama" required>
+          </div>
+          <div class="form-group">
+            <label for="telepon">Nomor Telepon</label>
+            <input type="tel" id="telepon" name="telepon" required>
+          </div>
+          <div class="form-group">
+            <label for="alamat">Alamat Lengkap</label>
+            <textarea id="alamat" name="alamat" rows="2" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="lokasi">Pin Lokasi Anda:</label>
+            <div id="mini-map"></div>
+            <div class="distance-info">
+              <strong>Jarak:</strong> <span id="jarak-display">0 km</span>
+              <input type="hidden" id="jarak" name="jarak" value="0">
+              <input type="hidden" id="lokasi-lat" name="lokasi-lat">
+              <input type="hidden" id="lokasi-lng" name="lokasi-lng">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="catatan">Catatan Tambahan</label>
+            <textarea id="catatan" name="catatan" rows="2"></textarea>
+          </div>
+        </form>
+      </div>
+
+      <a id="wa-link" href="#" target="_blank" class="order-button">Pesan via WhatsApp</a>
+    </aside>
+  </main>
+
+  <!-- Admin View -->
+  <main id="admin-view" class="admin-panel">
+    <div class="admin-header">
+      <h2>Dashboard Admin Warung Kuliner</h2>
+      <div class="admin-controls">
+        <button class="admin-btn" id="refresh-data">Refresh Data</button>
+        <button class="admin-btn logout" id="admin-logout">Logout</button>
+      </div>
+    </div>
+    
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="total-orders">0</div>
+        <div class="stat-label">Total Pesanan</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="today-orders">0</div>
+        <div class="stat-label">Pesanan Hari Ini</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="total-revenue">Rp 0</div>
+        <div class="stat-label">Total Pendapatan</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="pending-orders">0</div>
+        <div class="stat-label">Pesanan Tertunda</div>
+      </div>
+    </div>
+    
+    <div class="admin-section">
+      <h3>Kelola Menu</h3>
+      <!-- Menu management interface will be loaded here -->
+      <div id="menu-management">
+        <p>Fitur manajemen menu akan ditampilkan di sini.</p>
+      </div>
+    </div>
+    
+    <div class="admin-section">
+      <h3>Pesanan Terbaru</h3>
+      <!-- Recent orders will be displayed here -->
+      <div id="recent-orders">
+        <p>Daftar pesanan terbaru akan ditampilkan di sini.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Login Form Container -->
+  <div id="login-form-container" class="login-form-container">
+    <div class="login-form">
+      <div class="login-header">
+        <img src="images/logo-warungku.png" alt="Warungku">
+        <h2>Login Admin Warung Kuliner</h2>
+      </div>
+      
+      <form id="admin-login-form">
+        <div class="form-group">
+          <label for="admin-username">Username</label>
+          <input type="text" id="admin-username" name="username" required>
+          <div class="login-error" id="username-error"></div>
+        </div>
+        
+        <div class="form-group">
+          <label for="admin-password">Password</label>
+          <input type="password" id="admin-password" name="password" required>
+          <div class="login-error" id="password-error"></div>
+        </div>
+        
+        <button type="submit" class="login-btn">Masuk</button>
+      </form>
+      
+      <div class="login-footer">
+        <p>Hubungi super admin jika lupa password</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="js/warung-kuliner.js"></script>
+  <script>
+    // Admin login and view management
+    document.addEventListener('DOMContentLoaded', function() {
+      const adminLoginBtn = document.getElementById('admin-login-btn');
+      const customerViewBtn = document.getElementById('customer-view-btn');
+      const loginFormContainer = document.getElementById('login-form-container');
+      const adminLoginForm = document.getElementById('admin-login-form');
+      const adminLogoutBtn = document.getElementById('admin-logout');
+      const customerView = document.getElementById('customer-view');
+      const adminView = document.getElementById('admin-view');
+      
+      // Check if admin is already logged in
+      if (localStorage.getItem('adminLoggedIn') === 'true') {
+        showAdminView();
+      }
+      
+      // Open login form when admin login button is clicked
+      adminLoginBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        loginFormContainer.style.display = 'flex';
+      });
+      
+      // Close login form when clicking outside
+      loginFormContainer.addEventListener('click', function(e) {
+        if (e.target === loginFormContainer) {
+          loginFormContainer.style.display = 'none';
+        }
+      });
+      
+      // Switch back to customer view
+      customerViewBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        showCustomerView();
+      });
+      
+      // Handle admin login
+      adminLoginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const username = document.getElementById('admin-username').value;
+        const password = document.getElementById('admin-password').value;
+        let isValid = true;
+        
+        // Simple validation
+        if (!username) {
+          document.getElementById('username-error').textContent = 'Username harus diisi';
+          document.getElementById('username-error').style.display = 'block';
+          isValid = false;
+        } else {
+          document.getElementById('username-error').style.display = 'none';
+        }
+        
+        if (!password) {
+          document.getElementById('password-error').textContent = 'Password harus diisi';
+          document.getElementById('password-error').style.display = 'block';
+          isValid = false;
+        } else {
+          document.getElementById('password-error').style.display = 'none';
+        }
+        
+        if (isValid) {
+          // Simulate login (in real implementation, this would communicate with backend)
+          if (username === 'admin' && password === 'admin123') {
+            localStorage.setItem('adminLoggedIn', 'true');
+            loginFormContainer.style.display = 'none';
+            showAdminView();
+            loadAdminData();
+          } else {
+            alert('Username atau password salah!');
+          }
+        }
+      });
+      
+      // Handle admin logout
+      adminLogoutBtn.addEventListener('click', function() {
+        localStorage.removeItem('adminLoggedIn');
+        showCustomerView();
+      });
+      
+      function showAdminView() {
+        customerView.style.display = 'none';
+        adminView.style.display = 'block';
+        adminLoginBtn.style.display = 'none';
+        customerViewBtn.style.display = 'inline-block';
+      }
+      
+      function showCustomerView() {
+        customerView.style.display = 'flex';
+        adminView.style.display = 'none';
+        adminLoginBtn.style.display = 'inline-block';
+        customerViewBtn.style.display = 'none';
+      }
+      
+      function loadAdminData() {
+        // In a real implementation, this would fetch data from the server
+        document.getElementById('total-orders').textContent = '142';
+        document.getElementById('today-orders').textContent = '8';
+        document.getElementById('total-revenue').textContent = 'Rp 4,250,000';
+        document.getElementById('pending-orders').textContent = '3';
+      }
+    });
+  </script>
+</body>
+</html>

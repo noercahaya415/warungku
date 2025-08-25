@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Management Toko Retail - Warungku</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin-retail.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-store"></i>
+                <span>Management Toko Retail</span>
+            </div>
+            <div class="admin-info">
+                <span>Selamat datang, Admin</span>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="admin-tabs">
+        <button class="tab-btn active" data-tab="stock-masuk">Stock Masuk</button>
+        <button class="tab-btn" data-tab="stock-saat-ini">Stock Saat Ini</button>
+        <button class="tab-btn" data-tab="stock-keluar">Stock Keluar</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="admin-container">
+        <!-- Stock Masuk Tab -->
+        <div id="stock-masuk" class="tab-content active">
+            <div class="section-header">
+                <h2><i class="fas fa-box-open"></i> Barang Masuk</h2>
+                <div class="section-actions">
+                    <button class="btn-primary" id="scanMasukBtn">
+                        <i class="fas fa-barcode"></i> Multi-Scan Barcode
+                    </button>
+                    <button class="btn-secondary" id="importMasukBtn">
+                        <i class="fas fa-file-import"></i> Import Data
+                    </button>
+                </div>
+            </div>
+
+            <div class="scanner-container" id="scannerMasukContainer">
+                <div id="reader-masuk"></div>
+                <button class="btn-secondary" id="stopScanMasukBtn">Stop Scan</button>
+            </div>
+
+            <div class="form-container">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="barcode">Barcode</label>
+                        <input type="text" id="barcode" placeholder="Kode barcode">
+                    </div>
+                    <div class="form-group">
+                        <label for="namaBarang">Nama Barang</label>
+                        <input type="text" id="namaBarang" placeholder="Nama barang">
+                    </div>
+                    <div class="form-group">
+                        <label for="kategori">Kategori</label>
+                        <select id="kategori">
+                            <option value="">Pilih Kategori</option>
+                            <option value="sembako">Sembako</option>
+                            <option value="makanan">Makanan</option>
+                            <option value="minuman">Minuman</option>
+                            <option value="sabun-pembersih">Sabun & Pembersih</option>
+                            <option value="peralatan-rt">Peralatan RT</option>
+                            <option value="sayur-buah">Sayur & Buah</option>
+                            <option value="bumbu">Bumbu</option>
+                            <option value="obat">Obat-obatan</option>
+                            <option value="atk">ATK</option>
+                            <option value="rokok">Rokok</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="hargaBeli">Harga Beli</label>
+                        <input type="number" id="hargaBeli" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="hargaJual">Harga Jual</label>
+                        <input type="number" id="hargaJual" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="jumlahMasuk">Jumlah Masuk</label>
+                        <input type="number" id="jumlahMasuk" placeholder="0" value="1">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fotoBarang">Foto Barang</label>
+                        <div class="upload-container">
+                            <input type="file" id="fotoBarang" accept="image/*" capture="camera" style="display: none;">
+                            <button class="btn-secondary" id="uploadFotoBtn">
+                                <i class="fas fa-camera"></i> Ambil Foto
+                            </button>
+                            <div id="fotoPreview"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="supplier">Supplier</label>
+                        <input type="text" id="supplier" placeholder="Nama supplier">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn-primary" id="simpanBarangMasukBtn">
+                        <i class="fas fa-save"></i> Simpan
+                    </button>
+                    <button class="btn-secondary" id="resetFormBtn">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                </div>
+            </div>
+
+            <div class="data-table-container">
+                <div class="table-header">
+                    <h3>Riwayat Barang Masuk</h3>
+                    <div class="table-controls">
+                        <div class="search-box">
+                            <input type="text" id="searchMasuk" placeholder="Cari nama barang...">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <button class="btn-secondary" id="exportMasukBtn">
+                            <i class="fas fa-file-export"></i> Export
+                        </button>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Barcode</th>
+                            <th>Nama Barang</th>
+                            <th>Kategori</th>
+                            <th>Harga Beli</th>
+                            <th>Jumlah</th>
+                            <th>Supplier</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableMasukBody">
+                        <tr>
+                            <td colspan="8" class="no-data">Belum ada data barang masuk</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Stock Saat Ini Tab -->
+        <div id="stock-saat-ini" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-boxes"></i> Stock Saat Ini</h2>
+                <div class="section-actions">
+                    <button class="btn-primary" id="refreshStockBtn">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
+                </div>
+            </div>
+
+            <div class="filter-container">
+                <div class="filter-group">
+                    <label>Filter:</label>
+                    <input type="text" id="filterNama" placeholder="Nama barang">
+                    <select id="filterKategori">
+                        <option value="">Semua Kategori</option>
+                        <option value="sembako">Sembako</option>
+                        <option value="makanan">Makanan</option>
+                        <option value="minuman">Minuman</option>
+                        <option value="sabun-pembersih">Sabun & Pembersih</option>
+                        <option value="peralatan-rt">Peralatan RT</option>
+                        <option value="sayur-buah">Sayur & Buah</option>
+                        <option value="bumbu">Bumbu</option>
+                        <option value="obat">Obat-obatan</option>
+                        <option value="atk">ATK</option>
+                        <option value="rokok">Rokok</option>
+                    </select>
+                    <button class="btn-secondary" id="applyFilterBtn">Terapkan</button>
+                </div>
+            </div>
+
+            <div class="data-table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Barcode</th>
+                            <th>Nama Barang</th>
+                            <th>Kategori</th>
+                            <th>Harga Beli</th>
+                            <th>Harga Jual</th>
+                            <th>Stok</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableStockBody">
+                        <tr>
+                            <td colspan="7" class="no-data">Tidak ada data stok</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="stock-summary">
+                <div class="summary-card">
+                    <h4>Total Nilai Stok</h4>
+                    <p id="totalNilaiStok">Rp 0</p>
+                </div>
+                <div class="summary-card">
+                    <h4>Jumlah Item</h4>
+                    <p id="totalItem">0</p>
+                </div>
+                <div class="summary-card">
+                    <h4>Item Hampir Habis</h4>
+                    <p id="itemHampirHabis">0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stock Keluar Tab -->
+        <div id="stock-keluar" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-truck-loading"></i> Barang Keluar</h2>
+                <div class="section-actions">
+                    <button class="btn-primary" id="scanKeluarBtn">
+                        <i class="fas fa-barcode"></i> Multi-Scan Barcode
+                    </button>
+                    <button class="btn-secondary" id="exportKeluarBtn">
+                        <i class="fas fa-file-export"></i> Export
+                    </button>
+                </div>
+            </div>
+
+            <div class="scanner-container" id="scannerKeluarContainer">
+                <div id="reader-keluar"></div>
+                <button class="btn-secondary" id="stopScanKeluarBtn">Stop Scan</button>
+            </div>
+
+            <div class="sale-info">
+                <div class="sale-total">
+                    <h3>Total Penjualan: <span id="totalPenjualan">Rp 0</span></h3>
+                </div>
+                <div class="payment-method">
+                    <label>Metode Pembayaran:</label>
+                    <select id="metodePembayaran">
+                        <option value="tunai">Tunai</option>
+                        <option value="transfer">Transfer</option>
+                        <option value="qris">QRIS</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="data-table-container">
+                <div class="table-header">
+                    <h3>Daftar Barang Keluar</h3>
+                    <div class="table-controls">
+                        <div class="search-box">
+                            <input type="text" id="searchKeluar" placeholder="Cari nama barang...">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Barcode</th>
+                            <th>Nama Barang</th>
+                            <th>Harga Jual</th>
+                            <th>Jumlah</th>
+                            <th>Subtotal</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableKeluarBody">
+                        <tr>
+                            <td colspan="6" class="no-data">Belum ada barang keluar</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="checkout-actions">
+                <button class="btn-primary" id="prosesCheckoutBtn">
+                    <i class="fas fa-check"></i> Proses Checkout
+                </button>
+                <button class="btn-secondary" id="resetCheckoutBtn">
+                    <i class="fas fa-times"></i> Batalkan
+                </button>
+            </div>
+
+            <div class="data-table-container">
+                <div class="table-header">
+                    <h3>Riwayat Barang Keluar</h3>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Invoice</th>
+                            <th>Jumlah Item</th>
+                            <th>Total</th>
+                            <th>Metode Bayar</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableRiwayatKeluarBody">
+                        <tr>
+                            <td colspan="6" class="no-data">Belum ada riwayat penjualan</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal untuk edit barang -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Barang</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <!-- Form edit akan diisi oleh JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/html5-qrcode.min.js"></script>
+    <script src="js/admin-retail.js"></script>
+</body>
+</html>

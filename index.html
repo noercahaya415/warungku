@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warungku - Solusi Digital untuk Warung Retail & Kuliner</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav class="navbar">
+                <a href="#" class="nav-logo">
+                    <img src="images/logo-warungku.png" alt="Warungku Logo">
+                </a>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Beranda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Fitur</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Harga</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Kontak</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero-section">
+                <div class="hero-content">
+                    <!-- Logo yang diperbesar -->
+                    <img src="images/logo-warungku.png" alt="Warungku Logo" class="hero-logo">
+                    
+                    <!-- Judul yang dipusatkan -->
+                    <div class="hero-title">
+                        <h1>Selamat Datang di <span>Warungku</span></h1>
+                        <p>Platform digital untuk membantu mengembangkan warung retail dan kuliner Anda. Kelola inventaris, transaksi, dan laporan dengan mudah.</p>
+                    </div>
+                    
+                    <div class="auth-container">
+                        <div class="auth-tabs">
+                            <button class="tab-btn active">Masuk</button>
+                        </div>
+                        
+                        <div class="auth-forms">
+                            <!-- Form Login -->
+                            <form id="login-form" class="auth-form active">
+                                <div class="input-group">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" placeholder="Username atau Email" required>
+                                </div>
+                                <div class="input-group">
+                                    <i class="fas fa-lock"></i>
+                                    <input type="password" placeholder="Kata Sandi" required>
+                                    <span class="toggle-password"><i class="fas fa-eye"></i></span>
+                                </div>
+                                <div class="remember-forgot">
+                                    <label>
+                                        <input type="checkbox">
+                                        Ingat saya
+                                    </label>
+                                    <a href="#">Lupa kata sandi?</a>
+                                </div>
+                                <button type="submit" class="submit-btn">Masuk</button>
+                                
+                                <div class="divider">
+                                    <span>Atau</span>
+                                </div>
+                                
+                                <button type="button" class="register-btn" onclick="window.location.href='pages/register.html'">
+                                    Daftar Sekarang
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hero-image">
+                    <img src="images/warung-illustration.png" alt="Warung Illustration">
+                    <h2>Click to make the most out of this idea with a free account</h2>
+                    <p>Welcome! Dapatkan akses penuh untuk mengelola warung Anda secara digital</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logo-warungku.png" alt="Warungku Logo">
+                </div>
+                <div class="footer-links">
+                    <a href="#">Tentang Kami</a>
+                    <a href="#">Kebijakan Privasi</a>
+                    <a href="#">Syarat & Ketentuan</a>
+                    <a href="#">Bantuan</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Warungku. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

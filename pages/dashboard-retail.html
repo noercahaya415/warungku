@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Kesehatan Usaha - Warungku</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="css/dashboard-retail.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <span>Dashboard Kesehatan Usaha</span>
+            </div>
+            <div class="header-actions">
+                <div class="date-filter">
+                    <i class="fas fa-calendar-alt"></i>
+                    <input type="text" id="dateRangePicker" placeholder="Pilih Periode">
+                </div>
+                <button class="btn-secondary" id="exportReportBtn">
+                    <i class="fas fa-file-export"></i> Export Laporan
+                </button>
+                <button class="logout-btn" id="backToAdminBtn">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Admin
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="dashboard-container">
+        <!-- Ringkasan Kesehatan Usaha -->
+        <div class="health-score-section">
+            <div class="health-score-card">
+                <h3>Skor Kesehatan Usaha</h3>
+                <div class="score-circle" id="healthScore">
+                    <span>72</span>
+                    <div class="score-label">Baik</div>
+                </div>
+                <div class="score-breakdown">
+                    <div class="breakdown-item">
+                        <span class="label">Penjualan</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 85%"></div>
+                        </div>
+                        <span class="value">85%</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="label">Margin</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 65%"></div>
+                        </div>
+                        <span class="value">65%</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="label">Inventori</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 78%"></div>
+                        </div>
+                        <span class="value">78%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="key-metrics">
+                <div class="metric-card">
+                    <div class="metric-icon sales">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="metric-info">
+                        <h4>Penjualan Hari Ini</h4>
+                        <div class="metric-value">Rp 1.250.000</div>
+                        <div class="metric-change positive">
+                            <i class="fas fa-arrow-up"></i> 12% dari kemarin
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-icon profit">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="metric-info">
+                        <h4>Margin Kotor</h4>
+                        <div class="metric-value">32%</div>
+                        <div class="metric-change negative">
+                            <i class="fas fa-arrow-down"></i> 3% dari bulan lalu
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-icon inventory">
+                        <i class="fas fa-boxes"></i>
+                    </div>
+                    <div class="metric-info">
+                        <h4>Perputaran Stok</h4>
+                        <div class="metric-value">4.2x</div>
+                        <div class="metric-change positive">
+                            <i class="fas fa-arrow-up"></i> 0.8x dari kuartal lalu
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grafik Performa -->
+        <div class="charts-section">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3>Trend Penjualan 30 Hari Terakhir</h3>
+                    <div class="chart-actions">
+                        <button class="chart-btn active" data-period="month">Bulan</button>
+                        <button class="chart-btn" data-period="week">Minggu</button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="salesTrendChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3>Komposisi Penjualan per Kategori</h3>
+                </div>
+                <div class="chart-container">
+                    <canvas id="categorySalesChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analisis Mendalam -->
+        <div class="analysis-section">
+            <div class="analysis-card">
+                <h3>Produk Terlaris</h3>
+                <div class="analysis-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Produk</th>
+                                <th>Terjual</th>
+                                <th>Pendapatan</th>
+                                <th>Margin</th>
+                            </tr>
+                        </thead>
+                        <tbody id="topProductsBody">
+                            <tr>
+                                <td>Mie Instan Sedap Goreng</td>
+                                <td>125</td>
+                                <td>Rp 625.000</td>
+                                <td>28%</td>
+                            </tr>
+                            <tr>
+                                <td>Beras Ramos 5kg</td>
+                                <td>42</td>
+                                <td>Rp 1.050.000</td>
+                                <td>15%</td>
+                            </tr>
+                            <tr>
+                                <td>Aqua Gelas 240ml</td>
+                                <td>98</td>
+                                <td>Rp 294.000</td>
+                                <td>25%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="analysis-card">
+                <h3>Produk Paling Menguntungkan</h3>
+                <div class="analysis-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Produk</th>
+                                <th>Margin</th>
+                                <th>Profit</th>
+                                <th>% dari Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="topMarginProductsBody">
+                            <tr>
+                                <td>Kopi Kapal Api 250g</td>
+                                <td>42%</td>
+                                <td>Rp 320.000</td>
+                                <td>18%</td>
+                            </tr>
+                            <tr>
+                                <td>Sabun Lifebuoy 100g</td>
+                                <td>38%</td>
+                                <td>Rp 275.000</td>
+                                <td>15%</td>
+                            </tr>
+                            <tr>
+                                <td>Minyak Goreng Bimoli 2L</td>
+                                <td>35%</td>
+                                <td>Rp 420.000</td>
+                                <td>24%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manajemen Inventori -->
+        <div class="inventory-section">
+            <div class="inventory-card">
+                <h3>Status Inventori</h3>
+                <div class="inventory-metrics">
+                    <div class="inventory-metric">
+                        <span class="label">Nilai Rata-Rata Stok</span>
+                        <span class="value">Rp 8.500.000</span>
+                    </div>
+                    <div class="inventory-metric">
+                        <span class="label">Hari Persediaan</span>
+                        <span class="value">24 hari</span>
+                    </div>
+                    <div class="inventory-metric">
+                        <span class="label">Produk Slow-Moving</span>
+                        <span class="value warning">12 produk</span>
+                    </div>
+                    <div class="inventory-metric">
+                        <span class="label">Stok Habis</span>
+                        <span class="value danger">5 produk</span>
+                    </div>
+                </div>
+                
+                <div class="inventory-alerts">
+                    <h4>Peringatan Stok</h4>
+                    <div class="alert-list">
+                        <div class="alert-item warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div class="alert-content">
+                                <span class="alert-title">Stok Menipis</span>
+                                <span class="alert-desc">8 produk memiliki stok di bawah minimum</span>
+                            </div>
+                            <button class="alert-action">Lihat</button>
+                        </div>
+                        <div class="alert-item danger">
+                            <i class="fas fa-times-circle"></i>
+                            <div class="alert-content">
+                                <span class="alert-title">Stok Habis</span>
+                                <span class="alert-desc">5 produk sudah habis</span>
+                            </div>
+                            <button class="alert-action">Lihat</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="inventory-card">
+                <h3>Rekomendasi Pembelian</h3>
+                <div class="recommendation-list">
+                    <div class="recommendation-item">
+                        <div class="product-info">
+                            <span class="product-name">Minyak Goreng Bimoli 2L</span>
+                            <span class="product-stock">Stok: 12 (Min: 20)</span>
+                        </div>
+                        <div class="recommendation-detail">
+                            <span class="rec-quantity">Rekomendasi: 15 unit</span>
+                            <span class="rec-value">Nilai: Rp 675.000</span>
+                        </div>
+                    </div>
+                    <div class="recommendation-item">
+                        <div class="product-info">
+                            <span class="product-name">Gula Gulaku 1kg</span>
+                            <span class="product-stock">Stok: 8 (Min: 15)</span>
+                        </div>
+                        <div class="recommendation-detail">
+                            <span class="rec-quantity">Rekomendasi: 12 unit</span>
+                            <span class="rec-value">Nilai: Rp 240.000</span>
+                        </div>
+                    </div>
+                    <div class="recommendation-item">
+                        <div class="product-info">
+                            <span class="product-name">Sabun Lifebuoy 100g</span>
+                            <span class="product-stock">Stok: 10 (Min: 25)</span>
+                        </div>
+                        <div class="recommendation-detail">
+                            <span class="rec-quantity">Rekomendasi: 20 unit</span>
+                            <span class="rec-value">Nilai: Rp 180.000</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="recommendation-total">
+                    <span>Total Estimasi Pembelian: <strong>Rp 1.095.000</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analisis Pelanggan -->
+        <div class="customer-section">
+            <div class="customer-card">
+                <h3>Analisis Pelanggan</h3>
+                <div class="customer-metrics">
+                    <div class="customer-metric">
+                        <span class="label">Rata-Rata Transaksi</span>
+                        <span class="value">Rp 45.000</span>
+                    </div>
+                    <div class="customer-metric">
+                        <span class="label">Transaksi per Hari</span>
+                        <span class="value">28</span>
+                    </div>
+                    <div class="customer-metric">
+                        <span class="label">Pelanggan Baru (Minggu ini)</span>
+                        <span class="value">15</span>
+                    </div>
+                </div>
+                
+                <div class="customer-insights">
+                    <h4>Insight Pelanggan</h4>
+                    <div class="insight-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Jam sibuk: 17:00-19:00 (35% transaksi)</span>
+                    </div>
+                    <div class="insight-item">
+                        <i class="fas fa-calendar-day"></i>
+                        <span>Hari penjualan tertinggi: Sabtu</span>
+                    </div>
+                    <div class="insight-item">
+                        <i class="fas fa-shopping-basket"></i>
+                        <span>Keranjang rata-rata: 4.2 item</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="customer-card">
+                <h3>Prediksi Penjualan</h3>
+                <div class="prediction-chart">
+                    <canvas id="salesPredictionChart"></canvas>
+                </div>
+                <div class="prediction-summary">
+                    <div class="prediction-item">
+                        <span class="label">Prediksi Penjualan 7 Hari Mendatang</span>
+                        <span class="value">Rp 8.750.000</span>
+                    </div>
+                    <div class="prediction-item">
+                        <span class="label">Kenaikan Diprediksi</span>
+                        <span class="value positive">+8%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal untuk Detail Laporan -->
+    <div class="modal" id="reportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Detail Laporan</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="printReportBtn">Cetak</button>
+                <button class="btn-primary" id="exportModalBtn">Export</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
+    <script src="js/dashboard-retail.js"></script>
+</body>
+</html>
